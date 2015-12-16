@@ -1,0 +1,2 @@
+# Scrapper
+Minecraft Scrapping plugin
