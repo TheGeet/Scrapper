@@ -1,0 +1,313 @@
+package me.wyatt.scrapper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Logger;
+import org.bukkit.Material;
+import org.bukkit.Server;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.inventory.CraftingInventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class main
+  extends JavaPlugin
+  implements Listener
+{
+  public final Logger logger = Logger.getLogger("Minecraft");
+  private List<Material> wood;
+  private List<Material> stone;
+  private List<Material> iron;
+  private List<Material> gold;
+  private List<Material> diamond;
+  private List<Material> leatherA;
+  private List<Material> chainA;
+  private List<Material> ironA;
+  private List<Material> goldA;
+  private List<Material> diamondA;
+  private boolean debugMode;
+  private HashMap<String, List<Material>> recipes;
+  public Listener Main;
+  
+  public void onEnable()
+  {
+    this.logger.info("Scrap has been enabled");
+    this.debugMode = getConfig().getBoolean("debug-mode");
+    getServer().getPluginManager().registerEvents(this, this);
+    registerTools();
+    registerArmor();
+  }
+  
+  public HashMap<String, List<Material>> getRecipes()
+  {
+    return this.recipes;
+  }
+  
+  public void initializeLists()
+  {
+    this.wood = new ArrayList();
+    this.stone = new ArrayList();
+    this.iron = new ArrayList();
+    this.gold = new ArrayList();
+    this.diamond = new ArrayList();
+    this.leatherA = new ArrayList();
+    this.chainA = new ArrayList();
+    this.ironA = new ArrayList();
+    this.goldA = new ArrayList();
+    this.diamondA = new ArrayList();
+  }
+  
+  @EventHandler
+  public void onCraftEvent(CraftItemEvent e)
+  {
+    if (e.getCurrentItem() == new ItemStack(Material.IRON_INGOT, 1)) {
+      for (Material mat : this.chainA) {
+        if ((e.getRecipe() == new ShapelessRecipe(new ItemStack(Material.IRON_INGOT, 1)).addIngredient(mat)) && 
+          (Math.random() >= 0.5D))
+        {
+          e.getInventory().addItem(new ItemStack[] { new ItemStack(Material.EMERALD, 1) });
+          Player p = (Player)e.getWhoClicked();
+          p.sendMessage("You have successfully salvaged an Emerald");
+        }
+      }
+    }
+  }
+  
+  private void registerArmor()
+  {
+    this.leatherA.add(Material.LEATHER_HELMET);
+    this.leatherA.add(Material.LEATHER_CHESTPLATE);
+    this.leatherA.add(Material.LEATHER_LEGGINGS);
+    this.leatherA.add(Material.LEATHER_BOOTS);
+    for (Material mat : this.leatherA) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.LEATHER, 2)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+    this.chainA.add(Material.CHAINMAIL_HELMET);
+    this.chainA.add(Material.CHAINMAIL_CHESTPLATE);
+    this.chainA.add(Material.CHAINMAIL_LEGGINGS);
+    this.chainA.add(Material.CHAINMAIL_BOOTS);
+    for (Material mat : this.chainA) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.IRON_INGOT, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+    this.ironA.add(Material.IRON_AXE);
+    this.ironA.add(Material.IRON_HOE);
+    this.ironA.add(Material.IRON_PICKAXE);
+    this.ironA.add(Material.IRON_SPADE);
+    this.ironA.add(Material.IRON_SWORD);
+    for (Material mat : this.ironA) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.IRON_INGOT, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+    this.goldA.add(Material.GOLD_AXE);
+    this.goldA.add(Material.GOLD_HOE);
+    this.goldA.add(Material.GOLD_PICKAXE);
+    this.goldA.add(Material.GOLD_SPADE);
+    this.goldA.add(Material.GOLD_SWORD);
+    for (Material mat : this.goldA) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.GOLD_INGOT, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+    this.diamondA.add(Material.DIAMOND_AXE);
+    this.diamondA.add(Material.DIAMOND_HOE);
+    this.diamondA.add(Material.DIAMOND_PICKAXE);
+    this.diamondA.add(Material.DIAMOND_SPADE);
+    this.diamondA.add(Material.DIAMOND_SWORD);
+    for (Material mat : this.diamondA) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.DIAMOND, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+  }
+  
+  public void onDisable()
+  {
+    this.logger.info("Scrap has been disabled");
+  }
+  
+  public void registerTools()
+  {
+    this.wood.add(Material.WOOD_AXE);
+    this.wood.add(Material.WOOD_HOE);
+    this.wood.add(Material.WOOD_PICKAXE);
+    this.wood.add(Material.WOOD_SPADE);
+    this.wood.add(Material.WOOD_SWORD);
+    for (Material mat : this.wood) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.WOOD, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+    this.stone.add(Material.STONE_AXE);
+    this.stone.add(Material.STONE_HOE);
+    this.stone.add(Material.STONE_PICKAXE);
+    this.stone.add(Material.STONE_SPADE);
+    this.stone.add(Material.STONE_SWORD);
+    for (Material mat : this.stone) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.COBBLESTONE, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+    this.iron.add(Material.IRON_AXE);
+    this.iron.add(Material.IRON_HOE);
+    this.iron.add(Material.IRON_PICKAXE);
+    this.iron.add(Material.IRON_SPADE);
+    this.iron.add(Material.IRON_SWORD);
+    for (Material mat : this.iron) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.IRON_INGOT, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+    this.gold.add(Material.GOLD_AXE);
+    this.gold.add(Material.GOLD_HOE);
+    this.gold.add(Material.GOLD_PICKAXE);
+    this.gold.add(Material.GOLD_SPADE);
+    this.gold.add(Material.GOLD_SWORD);
+    for (Material mat : this.gold) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.GOLD_INGOT, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+    this.diamond.add(Material.DIAMOND_AXE);
+    this.diamond.add(Material.DIAMOND_HOE);
+    this.diamond.add(Material.DIAMOND_PICKAXE);
+    this.diamond.add(Material.DIAMOND_SPADE);
+    this.diamond.add(Material.DIAMOND_SWORD);
+    for (Material mat : this.diamond) {
+      try
+      {
+        getServer().addRecipe(new ShapelessRecipe(new ItemStack(Material.DIAMOND, 1)).addIngredient(mat));
+        this.logger.info(mat.getData().getSimpleName() + " has been registered");
+      }
+      catch (Exception e)
+      {
+        if (this.debugMode)
+        {
+          this.logger.info("Could not register " + mat.getData().getSimpleName());
+          this.logger.info("===Snip Here===");
+          this.logger.info(e.getMessage());
+          this.logger.info("===End Snip===");
+        }
+      }
+    }
+  }
+}
